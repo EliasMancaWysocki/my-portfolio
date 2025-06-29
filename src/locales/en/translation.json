@@ -1,8 +1,10 @@
 {
-    "hello": "Hello world!",
-    "welcome": "Welcome, {{name}}",
-    "profile": {
-        "title": "My profile",
-        "edit": "Edit"
-    }
+    "welcome": [
+        "Welcome to my portfolio.",
+        "I am Elías Manca Wysocki, a full-stack developer.",
+        "I invite you to get to know me through this portfolio based on the PipBoy 2000 from the Fallout series.",
+        "In the INV section you can find my work and experiences.",
+        "In the DATA section you can learn more about me and my skills."
+    ],
+    "lenguage": "Lenguage"
 }

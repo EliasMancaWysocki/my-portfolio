@@ -1,7 +1,10 @@
 {
-    "welcome": "Bienvenido a mi portafolio. ",
-    "profile": {
-        "title": "Mi perfil",
-        "edit": "Editar"
-    }
+    "welcome": [
+        "Bienvenido a mi portafolio.",
+        "Soy Elías Manca Wysocki, desarrollador fullstack.",
+        "Te invito a conocerme a través de este portafolio basado en el PipBoy 2000 de la saga Fallout.",
+        "En la sección INV podrás encontrar mis trabajos y experiencias.",
+        "En la sección DATA podrás conocer más sobre mí y mis conocimientos."
+    ],
+    "lenguage": "Idioma"
 }
