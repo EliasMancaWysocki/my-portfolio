@@ -16,78 +16,95 @@ export default function PipBoyHeader() {
         return () => clearInterval(interval);
     }, []);
 
-    const version = import.meta.env.PACKAGE_VERSION || '1.0.0';
+
     const level = now.diff(START_DATE, 'year') + 1;
 
     // The "Bracket" segment for NIV, PV, PA, PE
-    // Style: Top horizontal line with small vertical ticks downwards at both ends.
-    const StatBracket = ({ label, value, className }: { label?: string, value: string | number, className?: string }) => (
-        <div className={clsx("relative flex flex-col items-center justify-end pb-1", className)}>
-            {/* Bracket Structure */}
-            <div className="w-full h-2 border-t-2 border-pipboy-light/80 relative mb-1">
-                {/* Left Tick */}
-                <div className="absolute left-0 top-[-2px] h-2 w-[2px] bg-pipboy-light/80" />
-                {/* Right Tick */}
-                <div className="absolute right-0 top-[-2px] h-2 w-[2px] bg-pipboy-light/80" />
+    const StatBracket = ({ label, value, className, width }: { label?: string, value: string | number, className?: string, width?: string }) => (
+        <div className={clsx("relative flex flex-col items-center justify-end pb-1", className)} style={{ width }}>
+            {/* Top Bracket Line with ticks */}
+            <div className="absolute top-0 left-0 right-0 h-4 border-t-2 border-pipboy-light/90">
+                <div className="absolute left-0 top-[-2px] h-3 w-[2px] bg-pipboy-light/90" />
+                <div className="absolute right-0 top-[-2px] h-3 w-[2px] bg-pipboy-light/90" />
             </div>
 
-            <div className="font-bold select-none text-xl tracking-wider px-2">
-                {label && <span className="mr-2">{label}</span>}
+            {/* Content centered under the bracket */}
+            <div className="font-vt323 text-2xl tracking-widest pt-3 flex items-center justify-center gap-3 w-full text-pipboy-light text-shadow-sm whitespace-nowrap px-2">
+                {label && <span className="font-bold">{label}</span>}
                 <span>{value}</span>
             </div>
         </div>
     );
 
-    // The "STAT" label style
+    // The "ESTAD" label style - mimics the image
     const StatLabel = () => (
-        <div className="relative flex flex-col items-start justify-end pb-1 mr-8">
-            {/* Short top bar above STAT */}
-            <div className="w-12 h-[2px] bg-pipboy-light/80 mb-2 ml-1" />
-            <span className="text-4xl font-bold tracking-widest leading-none">STAT</span>
+        <div className="relative flex flex-col justify-end pb-1 mr-6">
+            {/* Top-Left Bracket for ESTAD */}
+            <div className="absolute top-0 left-[-10px] right-0 h-4 border-t-2 border-pipboy-light/90">
+                <div className="absolute left-0 top-[-2px] h-3 w-[2px] bg-pipboy-light/90" />
+            </div>
+
+            <span className="font-vt323 text-4xl tracking-[0.2em] pt-2 text-pipboy-light text-shadow-md">ESTADO</span>
         </div>
     );
 
-    let content = null;
 
     if (location.pathname.startsWith('/stat')) {
         return (
-            <div className="h-20 flex items-end px-12 pb-2 font-pixelify text-pipboy-light w-full gap-4">
+            <div className="h-24 flex items-end px-16 pb-2 w-full gap-4 relative">
                 <StatLabel />
 
                 {/* Segments container */}
-                <div className="flex-1 flex items-end gap-6 h-full pb-1">
-                    <StatBracket label="NIV" value={level} className="flex-[0.6]" />
-                    <StatBracket label="PV" value="600/600" className="flex-1" />
+                <div className="flex-1 flex items-end justify-between h-full pb-1 gap-4">
+                    <StatBracket label="NIV" value={level} className="flex-1" />
+                    <StatBracket label="PV" value="600/600" className="flex-[1.5]" />
                     <StatBracket label="PA" value="85/85" className="flex-1" />
-                    <StatBracket label="PE" value={`v${version}`} className="flex-1" />
+                    <StatBracket label="PE" value="MAX" className="flex-1" />
                 </div>
             </div>
         );
     }
 
-    // Default logic
+    // ITEMS (INV) Header
     if (location.pathname.startsWith('/inv')) {
-        content = (
-            <div className="flex justify-between items-end border-b-2 border-pipboy-light/50 px-8 pb-2 w-full">
-                <span className="text-3xl tracking-widest">ITEMS P 3</span>
-                <span className="text-xl">PV 600/600</span>
-                <span className="text-xl">PE v{version}</span>
+        return (
+            <div className="h-24 flex items-end px-16 pb-2 w-full gap-4 relative">
+                <div className="relative flex flex-col justify-end pb-1 mr-6">
+                    {/* Top-Left Bracket for OBJTS */}
+                    <div className="absolute top-0 left-[-10px] right-0 h-4 border-t-2 border-pipboy-light/90">
+                        <div className="absolute left-0 top-[-2px] h-3 w-[2px] bg-pipboy-light/90" />
+                    </div>
+                    <span className="font-vt323 text-4xl tracking-[0.2em] pt-2 text-pipboy-light text-shadow-md">OBJTS</span>
+                </div>
+
+                {/* Segments container */}
+                <div className="flex-1 flex items-end justify-between h-full pb-1 gap-4">
+                    <StatBracket label="P" value="210.300" className="flex-1" />
+                    <StatBracket label="PV" value="400.400" className="flex-1" />
+                    <StatBracket label="RD" value="47" className="flex-1" />
+                    <StatBracket label="Chapas" value="8577" className="flex-[1.5]" />
+                </div>
             </div>
         );
     } else if (location.pathname.startsWith('/data')) {
-        content = (
-            <div className="flex justify-between items-end border-b-2 border-pipboy-light/50 px-8 pb-2 w-full">
-                <span className="text-4xl tracking-widest">DATA</span>
-                <span className="text-xl">{now.format('DD.MM.YY HH:mm')}</span>
+        return (
+            <div className="h-24 flex items-end px-16 pb-2 w-full gap-4 relative">
+                <div className="relative flex flex-col justify-end pb-1 mr-6">
+                    {/* Top-Left Bracket for DATOS */}
+                    <div className="absolute top-0 left-[-10px] right-0 h-4 border-t-2 border-pipboy-light/90">
+                        <div className="absolute left-0 top-[-2px] h-3 w-[2px] bg-pipboy-light/90" />
+                    </div>
+                    <span className="font-vt323 text-4xl tracking-[0.2em] pt-2 text-pipboy-light text-shadow-md">DATOS</span>
+                </div>
+
+                {/* Segments container */}
+                <div className="flex-1 flex items-end justify-between h-full pb-1 gap-4">
+                    <StatBracket value="Laboratorio subterráneo" className="flex-[2]" />
+                    <StatBracket value={now.format('DD.MM.YY, HH:mm')} className="flex-1" />
+                </div>
             </div>
         );
-    } else {
-        content = <div />;
     }
 
-    return (
-        <div className="h-20 flex items-end font-pixelify text-pipboy-light w-full">
-            {content}
-        </div>
-    );
+    return <div className="h-20" />;
 }
