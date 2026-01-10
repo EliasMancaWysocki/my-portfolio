@@ -1,16 +1,25 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { Fragment } from 'react';
 
 const SUB_TABS = {
-    '/stat': ['Estado', 'S.P.E.C.I.A.L', 'Habilidades', 'Extras', 'General'],
-    '/inv': [], // User requested no tabs for OBJS
-    '/data': ['Mapamundi', 'Radio']
+    '/stat': [
+        { label: 'Estado', path: 'status' },
+        { label: 'S.P.E.C.I.A.L', path: 'special' },
+        { label: 'Habilidades', path: 'perks' },
+        { label: 'Extras', path: 'perks' },
+        { label: 'General', path: 'status' },
+    ],
+    '/inv': [],
+    '/data': [
+        { label: 'Mapamundi', path: 'map' },
+        { label: 'Radio', path: 'radio' }
+    ]
 };
 
 export default function PipBoySubNav() {
     const location = useLocation();
-    // const navigate = useNavigate(); // Will be used when we have routes for sub-tabs
+    const navigate = useNavigate();
 
     // Simple matching to get the parent route key
     const currentSection = Object.keys(SUB_TABS).find(path => location.pathname.startsWith(path));
@@ -37,12 +46,16 @@ export default function PipBoySubNav() {
                 <LineSegment first />
 
                 {tabs.map((tab, index) => {
-                    const isActive = index === 0; // Mocking 'Estado' as active for now
+                    // Check if current path ends with the tab path or is exactly equal
+                    // For example: /stat/special should match 'special'
+                    const fullPath = `${currentSection}/${tab.path}`;
+                    const isActive = location.pathname.includes(tab.path);
                     const isLast = index === tabs.length - 1;
 
                     return (
-                        <Fragment key={tab}>
+                        <Fragment key={tab.label}>
                             <span
+                                onClick={() => navigate(fullPath)}
                                 className={clsx(
                                     "px-4 py-1 transition-all cursor-pointer",
                                     isActive
@@ -50,7 +63,7 @@ export default function PipBoySubNav() {
                                         : "text-pipboy-light/70 hover:text-pipboy-light hover:text-shadow-md"
                                 )}
                             >
-                                {tab}
+                                {tab.label}
                             </span>
 
                             {/* Line Segment after item */}
